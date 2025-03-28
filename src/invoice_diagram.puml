@@ -1,0 +1,45 @@
+@startuml
+class Invoice {
+  - customer: Customer
+  - line_items: List<LineItem>
+  - total_amount: float
+  + calculateTotal()
+  + addLineItem(item: LineItem)
+}
+
+class Customer {
+  - name: str
+  - address: str
+}
+
+class LineItem {
+  - product: Product
+  - quantity: int
+  - total_price: float
+  + calculateTotal()
+}
+
+class Product {
+  - name: str
+  - unit_price: float
+}
+
+class Calculator {
+  + calculateLineItemTotal(quantity: int, unit_price: float) : float
+  + calculateInvoiceTotal(line_items: List<LineItem>) : float
+}
+
+Invoice "1" -- "*" LineItem : contains
+Invoice "1" -- "1" Customer : has a
+Invoice ..> Calculator : uses
+
+Customer -- "1" Invoice : related to
+
+LineItem "1" -- "1" Product : references
+LineItem ..> Calculator : uses
+
+Product -- "1" LineItem : referenced by
+
+Calculator <.. Invoice : used by
+Calculator <.. LineItem : used by
+@enduml
